@@ -43,26 +43,28 @@ static bool ipaddr_mt4(const struct sk_buff *skb, struct xt_action_param *par)
 	const struct iphdr *iph = ip_hdr(skb);
 
 	printk(KERN_INFO
-			"xt_ipaddr: IN=%s OUT=%s SRC=%pI4 DST=%pI4 IPSRC=%pI4 IPDST=%pI4\n",
-			(xt_in(par) != NULL) ? xt_in(par)->name : "",
-			(xt_out(par) != NULL) ? xt_out(par)->name : "",
-			&iph->saddr, &iph->daddr, &info->src, &info->dst);
+		"xt_ipaddr: IN=%s OUT=%s SRC=%pI4 DST=%pI4 (CONF SRC=%pI4 DST=%pI4) TTL=%u LENGTH=%u PROTO=%u",
+		(xt_in(par) != NULL) ? xt_in(par)->name : "NONE",
+		(xt_out(par) != NULL) ? xt_out(par)->name : "NONE",
+		&iph->saddr, &iph->daddr, &info->src, &info->dst,
+		iph->ttl, iph->tot_len, iph->protocol
+		);
 
 	if (info->flags & XT_IPADDR_SRC) {
-		if ((iph->saddr != info->src.ip)
-				^ !!(info->flags & XT_IPADDR_SRC_INV)) {
-			printk(KERN_NOTICE "src IP - no match\n");
+		if ((iph->saddr != info->src.ip) ^ !!(info->flags & XT_IPADDR_SRC_INV)) {
+			printk(KERN_CONT "\t-> SRC not match\n");
 			return false;
 		}
 	}
 
 	if (info->flags & XT_IPADDR_DST) {
-		if ((iph->daddr != info->dst.ip)
-				^ !!(info->flags & XT_IPADDR_DST_INV)) {
-			printk(KERN_NOTICE "dst IP - no match\n");
+		if ((iph->daddr != info->dst.ip) ^ !!(info->flags & XT_IPADDR_DST_INV)) {
+			printk(KERN_CONT "\t-> DST not match\n");
 			return false;
 		}
 	}
+
+	printk(KERN_CONT "\t-> matched\n");
 
 	return true;
 }

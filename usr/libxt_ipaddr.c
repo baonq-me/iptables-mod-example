@@ -131,7 +131,7 @@ static void ipaddr_mt4_print(const void *entry,
 	const struct xt_ipaddr_mtinfo *info = (const void *)match->data;
 
 	if (info->flags & XT_IPADDR_SRC) {
-		printf("src IP ");
+		printf("src ");
 		if (info->flags & XT_IPADDR_SRC_INV)
 			printf("! ");
 		printf("%s ", numeric ?
@@ -140,7 +140,7 @@ static void ipaddr_mt4_print(const void *entry,
 	}
 
 	if (info->flags & XT_IPADDR_DST) {
-		printf("dst IP ");
+		printf("dst ");
 		if (info->flags & XT_IPADDR_DST_INV)
 			printf("! ");
 		printf("%s ", numeric ?
@@ -155,7 +155,7 @@ static void ipaddr_mt6_print(const void *entry,
 	const struct xt_ipaddr_mtinfo *info = (const void *)match->data;
 
 	if (info->flags & XT_IPADDR_SRC) {
-		printf("src IP ");
+		printf("src ");
 		if (info->flags & XT_IPADDR_SRC_INV)
 			printf("! ");
 		printf("%s ", numeric ?
@@ -164,7 +164,7 @@ static void ipaddr_mt6_print(const void *entry,
 	}
 
 	if (info->flags & XT_IPADDR_DST) {
-		printf("dst IP ");
+		printf("dst ");
 		if (info->flags & XT_IPADDR_DST_INV)
 			printf("! ");
 		printf("%s ", numeric ?
@@ -181,14 +181,14 @@ static void ipaddr_mt4_save(const void *entry,
 	if (info->flags & XT_IPADDR_SRC) {
 		if (info->flags & XT_IPADDR_SRC_INV)
 			printf("! ");
-		printf("--ipsrc %s ",
+		printf("--src %s ",
 		       xtables_ipaddr_to_numeric(&info->src.in));
 	}
 
 	if (info->flags & XT_IPADDR_DST) {
 		if (info->flags & XT_IPADDR_DST_INV)
 			printf("! ");
-		printf("--ipdst %s ",
+		printf("--dst %s ",
 		        xtables_ipaddr_to_numeric(&info->dst.in));
 	}
 }
@@ -201,14 +201,14 @@ static void ipaddr_mt6_save(const void *entry,
 	if (info->flags & XT_IPADDR_SRC) {
 		if (info->flags & XT_IPADDR_SRC_INV)
 			printf("! ");
-		printf("--ipsrc %s ",
+		printf("--src %s ",
 		       xtables_ip6addr_to_numeric(&info->src.in6));
 	}
 
 	if (info->flags & XT_IPADDR_DST) {
 		if (info->flags & XT_IPADDR_DST_INV)
 			printf("! ");
-		printf("--ipdst %s ",
+		printf("--dst %s ",
 		       xtables_ip6addr_to_numeric(&info->dst.in6));
 	}
 }
